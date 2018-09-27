@@ -1,12 +1,12 @@
 const express = require('express');
 const morgan = require('morgan'); // use morgan for logging the events on the HTTP layer
 const bodyParser = require('body-parser'); // use for parsing JSON data sent in HTTP requests
-const {ShoppingList} = require('./models'); // import the shopping list model
-const {Recipes} = require('./models'); // import the recipes model
+const {ShoppingList, Recipes} = require('./models'); // import the shopping list model
 
 const jsonParser = bodyParser.json();
 const app = express();
 
+// log the http layer
 app.use(morgan('common'));
 
 //add some items to ShoppingList. This is normally done on the database side
@@ -17,6 +17,20 @@ ShoppingList.create('peppers', 4);
 
 app.get('/shopping-list', (req, res) => {
   res.json(ShoppingList.get());
+});
+
+app.post('/shopping-list', jsonParser, (req, res)=> {
+  const requiredFields = ['name', 'budget'];
+  for (let i=0; i<requiredFields.length; i++) {
+    if (!requiredFields[i] in req.body) {
+      const message = `Missing ${field} in request body.`;
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  }
+
+  const item = ShoppingList.create(req.body.name, req.body.budget);
+  return res.status(201).json(item);
 });
 
 Recipes.create('chocolate milk', ['cocoa', 'milk', 'suger']);
