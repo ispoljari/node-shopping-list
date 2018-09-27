@@ -22,7 +22,7 @@ app.get('/shopping-list', (req, res) => {
 app.post('/shopping-list', jsonParser, (req, res)=> {
   const requiredFields = ['name', 'budget'];
   for (let i=0; i<requiredFields.length; i++) {
-    if (!requiredFields[i] in req.body) {
+    if (!(requiredFields[i] in req.body)) {
       const message = `Missing ${requiredFields[i]} in request body.`;
       console.error(message);
       return res.status(400).send(message);
@@ -43,7 +43,7 @@ app.get('/recipes', (req, res) => {
 app.post('/recipes', jsonParser, (req, res)=> {
   const requiredFields = ['name', 'ingredients'];
   for (let i=0; i<requiredFields.length; i++) {
-    if (!requiredFields[i] in req.body) {
+    if (!(requiredFields[i] in req.body)) {
       const message = `Missing ${requiredFields[i]} in request body.`;
       console.error(message);
       return res.status(400).send(message);
