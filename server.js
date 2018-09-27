@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan'); // use morgan for logging the events on the HTTP layer
 const bodyParser = require('body-parser'); // use for parsing JSON data sent in HTTP requests
 const {ShoppingList} = require('./models'); // import the shopping list model
+const {Recipes} = require('./models'); // import the recipes model
 
 const jsonParser = bodyParser.json();
 const app = express();
@@ -16,6 +17,13 @@ ShoppingList.create('peppers', 4);
 
 app.get('/shopping-list', (req, res) => {
   res.json(ShoppingList.get());
+});
+
+Recipes.create('chocolate milk', ['cocoa', 'milk', 'suger']);
+Recipes.create('pancakes', ['flower', 'milk', 'water', 'eggs', 'milkyway']);
+
+app.get('/recipes', (req, res) => {
+  res.json(Recipes.get());
 });
 
 // start the process at an envirnoment or 8080 port
