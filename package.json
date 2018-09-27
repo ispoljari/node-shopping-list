@@ -1,0 +1,25 @@
+{
+  "name": "node-shopping-list-v1",
+  "version": "0.0.1",
+  "description": "Shopping list app to demo \"the modern classic\" architecture style",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ispoljari/node-shopping-list-v1.git"
+  },
+  "keywords": [
+    "node",
+    "hyperdev",
+    "express"
+  ],
+  "author": "Ivan Spoljaric",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ispoljari/node-shopping-list-v1/issues"
+  },
+  "homepage": "https://github.com/ispoljari/node-shopping-list-v1#readme"
+}
