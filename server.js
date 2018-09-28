@@ -32,6 +32,7 @@ app.post('/shopping-list', jsonParser, (req, res)=> {
     }
   }
 
+  console.log(`Creating a shopping list item ${req.body.name}`);
   const item = ShoppingList.create(req.body.name, req.body.budget);
   return res.status(201).json(item);
 });
@@ -42,6 +43,34 @@ app.delete('/shopping-list/:id', (req, res) => {
   ShoppingList.delete(req.params.id);
   console.log(`Deleted shopping list item ${req.params.id}`);
   res.status(204).end();
+});
+
+// update items in the shopping list
+
+app.put('/shopping-list/:id', jsonParser, (req, res) => {
+  const requiredFields = ['id', 'name', 'budget'];
+  for (let i=0; i<requiredFields.length; i++) {
+    if (!(requiredFields[i] in req.body)) { // check if all of the required fields have been sent
+      const message = `Missing ${requiredFields[i]} in request body`;
+      console.error(message);
+      res.status(400).send(message);
+    }
+  }
+
+  if (req.params.id !== req.body.id) { // check if path id and body id match
+    const message = `Request path id ${req.params.id} and request body id ${req.body.id} must match`;
+    console.error(message);
+    res.status(400).send(message);
+  }
+
+  console.log(`Updating shopping list item ${req.params.id}`);
+  ShoppingList.update({
+    id: req.params.id,
+    name: req.body.name,
+    budget: req.body.budget
+  });
+
+  return res.status(204).end();
 });
 
 // add a few recipes as examples
@@ -77,6 +106,34 @@ app.delete('/recipes/:id', (req, res) => {
   Recipes.delete(req.params.id);
   console.log(`Deleted recipe ${req.params.id}`);
   res.status(204).end();
+});
+
+// update recipes 
+
+app.put('/recipes/:id', jsonParser, (req, res) => {
+  const requiredFields = ['id', 'name', 'ingredients'];
+  for (let i=0; i<requiredFields.length; i++) {
+    if(!(requiredFields[i] in req.body)) {
+      const message = `Missing ${requiredFields[i]} in request body`;
+      console.error(message);
+      res.status(400).send(message);
+    }
+  }
+
+  if (req.params.id !== req.body.id) { // check if path id and body id match
+    const message = `Request path id ${req.params.id} and request body id ${req.body.id} must match`;
+    console.error(message);
+    res.status(400).send(message);
+  }
+
+  console.log(`Updating recipes with item ${req.params.id}`);
+  Recipes.update({
+    id: req.params.id,
+    name: req.body.name,
+    ingredients: req.body.ingredients
+  });
+
+  return res.status(204).end();
 });
 
 // start the process at an envirnoment or 8080 port
